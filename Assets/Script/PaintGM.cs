@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEditor;
@@ -12,14 +13,14 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
     private int gridSize = 5;
     private int totalPathCount = 5;
-    private KeyCode mouseLeft;
     private CellScript[,] cell;
     private Vector2Int prevIndices;
     private Stack<PathScript> pathStack;
-    private Stack<CellScript> nodeSequence;
-    private PathScript path;
+    private Stack<CellScript> nodeStack;
+    private Color penColor;
+    private PathStatus pathStatus = PathStatus.Nonintersected;
 
-    public bool GetSessionStatus { get; private set; } = false;
+    public SessionStatus GetSessionStatus { get; private set; } = SessionStatus.Idle;
 
     protected override void Awake()
     {
@@ -27,8 +28,7 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
         cell = new CellScript[gridSize,gridSize];
         pathStack = new Stack<PathScript>(totalPathCount);
-        nodeSequence = new Stack<CellScript>(gridSize);
-        mouseLeft = KeyCode.Mouse0;
+        nodeStack = new Stack<CellScript>(gridSize);
     }
 
     void Start()
@@ -38,23 +38,71 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
     void Update()
     {
-        TrackMidCells();
+        switch (GetSessionStatus)
+        {
+            case SessionStatus.Started:
+                TrackMidCells();
+                break;
+            case SessionStatus.Finished:
+                FinishedRoutine();
+                break;
+            case SessionStatus.Suspended:
+                SuspendedRoutine();
+                break;
+        }
     }
 
     public void EndNodeRoutine(Vector2Int coordinates)
     {
         AccessCell(coordinates);
-        GetSessionStatus = !GetSessionStatus;
-        if (GetSessionStatus)
+        GetSessionStatus = SessionStatus.Started;
+        PathScript head = PathService.Instance.GeneratePath(cell[coordinates.x, coordinates.y].Pos);
+        if(pathStack.Count != 0)
         {
-            PathScript head = PathService.Instance.GeneratePath(cell[coordinates.x, coordinates.y].Pos);
-            if(pathStack.Count != 0)
-            {
-                pathStack.Peek().enabled = false;
-            }
-            pathStack.Push(head);
-            pathStack.Peek().Stick(cell[coordinates.x, coordinates.y]);
+            pathStack.Peek().enabled = false;
         }
+        pathStack.Push(head);
+        pathStack.Peek().Attach(cell[coordinates.x, coordinates.y]);
+    }
+
+    public void SetColor(Color color)
+    {
+        pathStack.Peek().SetPathColor(color);
+        penColor = color;
+    }
+
+    public void ReportIntersection()
+    {
+        pathStatus = PathStatus.Intersected;
+    }
+
+    private void FinishedRoutine()
+    {
+        if(pathStatus == PathStatus.Intersected)
+        {
+            OneStepBack();
+            for(; nodeStack.Peek().Designation != CellRole.EndNode; )
+            {
+                OneStepBack();
+            }
+            OneStepBack();
+            pathStack.Peek().DestroyPath();
+            pathStack.Pop();
+            pathStatus = PathStatus.Nonintersected;
+        }
+        GetSessionStatus = SessionStatus.Idle;
+    }
+
+    private void SuspendedRoutine()
+    {
+        throw new NotImplementedException();
+    }
+
+    private void OneStepBack()
+    {
+        pathStack.Peek().Dettach();
+        nodeStack.Peek().ResetToDefault();
+        nodeStack.Pop();
     }
 
     private void FormGrid()
@@ -76,11 +124,6 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
     private void TrackMidCells()
     {
-        if (!GetSessionStatus)
-        {
-            return;
-        }
-
         int criticalValue = 1;
 
         for (int i = -1; i <= criticalValue; i++)
@@ -94,8 +137,8 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
     private void AccessCell(Vector2Int coordinates)
     {
-        cell[coordinates.x, coordinates.y].ChangeColor(Color.black);
-        nodeSequence.Push(cell[coordinates.x, coordinates.y]);
+        cell[coordinates.x, coordinates.y].ChangeColor(penColor);
+        nodeStack.Push(cell[coordinates.x, coordinates.y]);
         cell[coordinates.x, coordinates.y].PrevStatusAnalysis();
         prevIndices = coordinates;
     }
@@ -125,11 +168,11 @@ public class PaintGM : SingletonBehaviour<PaintGM>
         if (Vector2.Distance(cell[currentIndices.x, currentIndices.y].Pos, mousePos) < CellScript.Radius)
         {
             AccessCell(new Vector2Int(currentIndices.x, currentIndices.y));
-            pathStack.Peek().Stick(cell[currentIndices.x, currentIndices.y]);
+            pathStack.Peek().Attach(cell[currentIndices.x, currentIndices.y]);
             prevIndices = currentIndices;
             if (cell[currentIndices.x, currentIndices.y].Designation == CellRole.EndNode)
             {
-                GetSessionStatus = !GetSessionStatus;
+                GetSessionStatus = SessionStatus.Finished;
             }
         }
     }

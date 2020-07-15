@@ -150,11 +150,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f813795a8f1508042883b03dc4de6c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  middleCell: {fileID: 7101073375032607515, guid: 985772a3a4e5a6d48af5b7a56a63ef0b,
+  middleCell: {fileID: 8243654340327581222, guid: 985772a3a4e5a6d48af5b7a56a63ef0b,
     type: 3}
-  endCell: {fileID: 7101073375032607515, guid: 8a760514c806a4d4fbd09275f4ccdcc0, type: 3}
+  endCell: {fileID: 8243654340327581222, guid: 8a760514c806a4d4fbd09275f4ccdcc0, type: 3}
   board: {fileID: 2098196006}
-  endNodeSymbol: {fileID: 8146300305937299576, guid: 8d1f042166a867d40bbf20947ffc7928,
+  endNodeSymbol: {fileID: 4526959704896607677, guid: 8d1f042166a867d40bbf20947ffc7928,
     type: 3}
 --- !u!4 &313925031
 Transform:

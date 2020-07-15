@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,16 +14,12 @@ public class CellScript : MonoBehaviour
     private cellStatus status = cellStatus.UnVisisted;
     private Image image;
     private Vector2Int coordinates;
+    private Color defaultColor = Color.white;
     private Color endNodeColor;
 
     void Awake()
     {
         image = GetComponent<Image>();
-    }
-
-    void Start()
-    {
-        print(endNodeColor.ToString());
     }
 
     public Vector3 Pos { get { return transform.position; } }
@@ -47,7 +44,7 @@ public class CellScript : MonoBehaviour
             return;
         }
         status = cellStatus.Intersection;
-
+        PaintGM.Instance.ReportIntersection();
     }
 
     public void ButtonClick()
@@ -55,5 +52,11 @@ public class CellScript : MonoBehaviour
         PaintGM.Instance.EndNodeRoutine(coordinates);
         PaintGM.Instance.SetColor(endNodeColor);
         ChangeColor(endNodeColor);
+    }
+
+    internal void ResetToDefault()
+    {
+        image.color = defaultColor;
+        status = cellStatus.UnVisisted;
     }
 }

@@ -15,14 +15,14 @@ public class PathScript : MonoBehaviour
 
     void Update()
     {
-        if (isReadyToFollow & PaintGM.Instance.GetSessionStatus)
+        if (isReadyToFollow & PaintGM.Instance.GetSessionStatus == SessionStatus.Started)
         {
             Vector2 Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             path.SetPosition(currentNode, Pos);
         }
     }
 
-    public void Stick(CellScript cell)
+    public void Attach(CellScript cell)
     {
         path.SetPosition(currentNode, cell.Pos);
 
@@ -39,6 +39,16 @@ public class PathScript : MonoBehaviour
         {
             ToNextNode();
         }
+    }
+
+    public void DestroyPath()
+    {
+        Destroy(gameObject);
+    }
+
+    public void Dettach()
+    {
+        path.positionCount--;
     }
 
     public void SetPathColor(Color color)
