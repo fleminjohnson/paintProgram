@@ -12,25 +12,17 @@ public class CellScript : MonoBehaviour
 
     private cellStatus status = cellStatus.UnVisisted;
     private Image image;
-    private Image childImage;
     private Vector2Int coordinates;
     private Color endNodeColor;
 
     void Awake()
     {
         image = GetComponent<Image>();
-        if(transform.childCount > 0)
-        {
-            childImage = transform.GetChild(0).GetComponent<Image>();
-        }
     }
 
     void Start()
     {
-        if(role == CellRole.EndNode & childImage != null)
-        {
-            endNodeColor = childImage.color;
-        }
+        print(endNodeColor.ToString());
     }
 
     public Vector3 Pos { get { return transform.position; } }
@@ -39,9 +31,12 @@ public class CellScript : MonoBehaviour
 
     public CellRole Designation { get{ return role; } }
 
+    public Color EndNodeColor { set { endNodeColor = value; } }
+
     public void ChangeColor(Color cellColor)
     {
         image.color = cellColor;
+        image.color = image.color / 2;
     }
 
     public void PrevStatusAnalysis()
@@ -52,10 +47,13 @@ public class CellScript : MonoBehaviour
             return;
         }
         status = cellStatus.Intersection;
+
     }
 
     public void ButtonClick()
     {
         PaintGM.Instance.EndNodeRoutine(coordinates);
+        PaintGM.Instance.SetColor(endNodeColor);
+        ChangeColor(endNodeColor);
     }
 }

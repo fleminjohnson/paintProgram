@@ -41,6 +41,12 @@ public class PathScript : MonoBehaviour
         }
     }
 
+    public void SetPathColor(Color color)
+    {
+        path.startColor = color;
+        path.endColor = color;
+    }
+
     private void ToNextNode()
     {
         path.positionCount++;

@@ -6,57 +6,49 @@ using UnityEngine.UI;
 public class NodeService : SingletonBehaviour<NodeService>
 {
     [SerializeField]
-    private GameObject middleCell;
+    private CellScript middleCell;
     [SerializeField]
-    private GameObject endCell;
+    private CellScript endCell;
     [SerializeField]
     private Transform board;
     [SerializeField]
-    private GameObject endNodeSymbol;
+    private Image endNodeSymbol;
 
     private int gridSize = 25;
     private Team[] gridArray = { Team.Default, Team.Default, Team.Default, Team.Red, Team.Green,
         Team.Default, Team.Default, Team.Blue, Team.Green, Team.Default, Team.Red, 
         Team.Default, Team.Default, Team.Default, Team.Default, Team.Orange, Team.Blue, Team.Default, Team.Yellow, 
         Team.Orange, Team.Default, Team.Default, Team.Default, Team.Default,Team.Yellow };
-    
-    protected override void Awake()
+
+    void Start()
     {
-        base.Awake();
+        CreateGrid();
+    }
 
-        GameObject currentObj = null;
-        for(int i = 0; i < gridSize; i++)
+    private void CreateGrid()
+    {
+        CellScript currentObj;
+        for (int i = 0; i < gridSize; i++)
         {
-            //if(gridArray[i] == 0)
-            //{
-            //    currentObj = Instantiate(middleCell);
-            //}
-            //else
-            //{
-            //    currentObj = Instantiate(endCell);
-            //    endNodeS = Instantiate(endNodeSymbol, currentObj.transform);
-            //    endNodeS.transform.SetParent(currentObj.transform);
-            //}
-
             switch (gridArray[i])
             {
                 case Team.Blue:
-                    CreateTeam(out currentObj);
+                    CreateTeam(out currentObj, Color.blue);
                     break;
                 case Team.Green:
-                    CreateTeam(out currentObj);
+                    CreateTeam(out currentObj, Color.green);
                     break;
                 case Team.Orange:
-                    CreateTeam(out currentObj);
+                    CreateTeam(out currentObj, Color.cyan);
                     break;
                 case Team.Red:
-                    CreateTeam(out currentObj);
+                    CreateTeam(out currentObj, Color.red);
                     break;
                 case Team.Yellow:
-                    CreateTeam(out currentObj);
+                    CreateTeam(out currentObj, Color.yellow);
                     break;
                 default:
-                    currentObj = Instantiate(middleCell);
+                    currentObj = GameObject.Instantiate<CellScript>(middleCell);
                     break;
             }
             currentObj.transform.SetParent(board.transform);
@@ -64,11 +56,13 @@ public class NodeService : SingletonBehaviour<NodeService>
         }
     }
 
-    private void CreateTeam(out GameObject currentObj)
+    private void CreateTeam(out CellScript currentObj, Color nodeColor)
     {
-        GameObject endNodeS = null;
+        Image endNodeS;
         currentObj = Instantiate(endCell);
+        currentObj.EndNodeColor = nodeColor;
         endNodeS = Instantiate(endNodeSymbol, currentObj.transform);
+        endNodeS.color = nodeColor;
         endNodeS.transform.SetParent(currentObj.transform);
     }
 }
