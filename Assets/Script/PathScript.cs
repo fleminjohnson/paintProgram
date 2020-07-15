@@ -6,8 +6,11 @@ public class PathScript : MonoBehaviour
 {
     private LineRenderer path;
     private int currentNode = 0;
-    private bool isReadyToFollow = false;
-      
+
+    public bool IsReadytoFollow { get; set; } = false;
+
+    public int CurrentIndex { get => path.positionCount; }
+
     void Awake()
     {
         path = GetComponent<LineRenderer>();
@@ -15,10 +18,14 @@ public class PathScript : MonoBehaviour
 
     void Update()
     {
-        if (isReadyToFollow & PaintGM.Instance.GetSessionStatus == SessionStatus.Started)
+        if (IsReadytoFollow & PaintGM.Instance.GetSessionStatus == SessionStatus.Started)
         {
             Vector2 Pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             path.SetPosition(currentNode, Pos);
+        }
+        else
+        {
+            IsReadytoFollow = false;
         }
     }
 
@@ -28,15 +35,16 @@ public class PathScript : MonoBehaviour
 
         if (cell.Designation == CellRole.EndNode)
         {
-            isReadyToFollow = !isReadyToFollow;
-            if(isReadyToFollow)
+            IsReadytoFollow = !IsReadytoFollow;
+            if(IsReadytoFollow)
             {
+                currentNode++;
                 ToNextNode();
-                path.SetPosition(currentNode, Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
         }
         else
         {
+            currentNode++;
             ToNextNode();
         }
     }
@@ -57,9 +65,9 @@ public class PathScript : MonoBehaviour
         path.endColor = color;
     }
 
-    private void ToNextNode()
+    public void ToNextNode()
     {
         path.positionCount++;
-        currentNode++;
+        path.SetPosition(currentNode, Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 }

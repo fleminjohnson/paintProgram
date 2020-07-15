@@ -16,10 +16,12 @@ public class CellScript : MonoBehaviour
     private Vector2Int coordinates;
     private Color defaultColor = Color.white;
     private Color endNodeColor;
+    private Stack<Color> colorHistory = new Stack<Color>();
 
     void Awake()
     {
         image = GetComponent<Image>();
+        colorHistory.Push(defaultColor);
     }
 
     public Vector3 Pos { get { return transform.position; } }
@@ -32,6 +34,7 @@ public class CellScript : MonoBehaviour
 
     public void ChangeColor(Color cellColor)
     {
+        colorHistory.Push(image.color);
         image.color = cellColor;
         image.color = image.color / 2;
     }
@@ -49,14 +52,29 @@ public class CellScript : MonoBehaviour
 
     public void ButtonClick()
     {
-        PaintGM.Instance.EndNodeRoutine(coordinates);
         PaintGM.Instance.SetColor(endNodeColor);
-        ChangeColor(endNodeColor);
+        PaintGM.Instance.EndNodeRoutine(coordinates);
     }
 
     internal void ResetToDefault()
     {
-        image.color = defaultColor;
-        status = cellStatus.UnVisisted;
+        if(colorHistory.Count > 1)
+        {
+            image.color = colorHistory.Pop();
+        }
+        else
+        {
+            image.color = colorHistory.Peek();
+        }
+
+        if(status == cellStatus.Intersection)
+        {
+            status = cellStatus.Visited;
+            return;
+        }
+        else
+        {
+            status = cellStatus.UnVisisted;
+        }
     }
 }

@@ -52,25 +52,6 @@ public class PaintGM : SingletonBehaviour<PaintGM>
         }
     }
 
-    public void EndNodeRoutine(Vector2Int coordinates)
-    {
-        AccessCell(coordinates);
-        GetSessionStatus = SessionStatus.Started;
-        PathScript head = PathService.Instance.GeneratePath(cell[coordinates.x, coordinates.y].Pos);
-        if(pathStack.Count != 0)
-        {
-            pathStack.Peek().enabled = false;
-        }
-        pathStack.Push(head);
-        pathStack.Peek().Attach(cell[coordinates.x, coordinates.y]);
-    }
-
-    public void SetColor(Color color)
-    {
-        pathStack.Peek().SetPathColor(color);
-        penColor = color;
-    }
-
     public void ReportIntersection()
     {
         pathStatus = PathStatus.Intersected;
@@ -95,14 +76,36 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
     private void SuspendedRoutine()
     {
-        throw new NotImplementedException();
+        if (pathStatus == PathStatus.Intersected)
+        {
+            GetSessionStatus = SessionStatus.Finished;
+            return;
+        }
+        if (DistanceCheck(nodeStack.Peek()))
+        {
+            pathStack.Peek().ToNextNode();
+            pathStack.Peek().IsReadytoFollow = true;
+            GetSessionStatus = SessionStatus.Started;
+        }
     }
 
-    private void OneStepBack()
+    public void EndNodeRoutine(Vector2Int coordinates)
     {
-        pathStack.Peek().Dettach();
-        nodeStack.Peek().ResetToDefault();
-        nodeStack.Pop();
+        AccessCell(coordinates);
+        GetSessionStatus = SessionStatus.Started;
+        PathScript head = PathService.Instance.GeneratePath(cell[coordinates.x, coordinates.y].Pos);
+        if (pathStack.Count != 0)
+        {
+            pathStack.Peek().enabled = false;
+        }
+        pathStack.Push(head);
+        pathStack.Peek().Attach(cell[coordinates.x, coordinates.y]);
+        pathStack.Peek().SetPathColor(penColor);
+    }
+
+    public void SetColor(Color color)
+    {
+        penColor = color;
     }
 
     private void FormGrid()
@@ -118,8 +121,14 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
             cell[y, x % gridSize] = board.GetChild(x).GetComponent<CellScript>();
             cell[y, x % gridSize].Coordinates = new Vector2Int(y, x % gridSize);
-            print(cell[y, x % gridSize].Pos);
         }
+    }
+
+    private void OneStepBack()
+    {
+        pathStack.Peek().Dettach();
+        nodeStack.Peek().ResetToDefault();
+        nodeStack.Pop();
     }
 
     private void TrackMidCells()
@@ -133,6 +142,21 @@ public class PaintGM : SingletonBehaviour<PaintGM>
                 PathPossibleAt(i, j);
             }
         }
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (pathStack.Peek().CurrentIndex > 2)
+            {
+                pathStack.Peek().Dettach();
+                GetSessionStatus = SessionStatus.Suspended;
+            }
+            else
+            {
+                OneStepBack();
+                pathStack.Pop().DestroyPath();
+                GetSessionStatus = SessionStatus.Idle;
+            }
+        }
+
     }
 
     private void AccessCell(Vector2Int coordinates)
@@ -175,5 +199,16 @@ public class PaintGM : SingletonBehaviour<PaintGM>
                 GetSessionStatus = SessionStatus.Finished;
             }
         }
+    }
+
+    private bool DistanceCheck(CellScript cell)
+    {
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (Input.GetMouseButtonDown(0) & Vector2.Distance(cell.Pos, mousePos) < CellScript.Radius)
+        {
+            return true;
+        }
+        return false;
     }
 }
