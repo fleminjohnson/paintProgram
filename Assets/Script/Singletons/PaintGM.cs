@@ -13,6 +13,8 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
     private int gridSize = 5;
     private int totalPathCount = 5;
+    private int initial = 0;
+    private int actualValue = 0;
     private CellScript[,] cell;
     private Vector2Int prevIndices;
     private Stack<PathScript> pathStack;
@@ -67,11 +69,37 @@ public class PaintGM : SingletonBehaviour<PaintGM>
                 OneStepBack();
             }
             OneStepBack();
-            pathStack.Peek().DestroyPath();
-            pathStack.Pop();
             pathStatus = PathStatus.Nonintersected;
         }
         GetSessionStatus = SessionStatus.Idle;
+        EventServices.GenericInstance.InvokeOnFlowUpdate(pathStack.Count);
+        WinCondition();
+    }
+
+    private void WinCondition()
+    {
+        if(pathStack.Count != totalPathCount )
+        {
+            return;
+        }
+        if(nodeStack.Count != board.childCount)
+        {
+            for(int i = 0; i < 5; i++)
+            {
+                for(int j = 0; j < 5; j++)
+                {
+                    if(cell[i,j].Status == cellStatus.UnVisisted)
+                    {
+                        cell[i, j].ExposeUnVisited();
+                    }
+                }
+            }
+            EventServices.GenericInstance.InvokeOnGameOver();
+        }
+        else
+        {
+            EventServices.GenericInstance.InvokeOnWin();
+        }
     }
 
     private void SuspendedRoutine()
@@ -92,6 +120,7 @@ public class PaintGM : SingletonBehaviour<PaintGM>
     public void EndNodeRoutine(Vector2Int coordinates)
     {
         AccessCell(coordinates);
+        initial = nodeStack.Count;
         GetSessionStatus = SessionStatus.Started;
         PathScript head = PathService.Instance.GeneratePath(cell[coordinates.x, coordinates.y].Pos);
         if (pathStack.Count != 0)
@@ -108,27 +137,36 @@ public class PaintGM : SingletonBehaviour<PaintGM>
         penColor = color;
     }
 
+    public void OneStepBack()
+    {
+        if(nodeStack.Count < 1)
+        {
+            return;
+        }
+        if (nodeStack.Peek().Designation == CellRole.EndNode & pathStack.Peek().CurrentIndex == 1)
+        {
+            Destroy(pathStack.Pop().gameObject); 
+        }
+        else
+        {
+            pathStack.Peek().Dettach();
+        }
+        nodeStack.Peek().ResetToDefault();
+        nodeStack.Pop();
+    }
+
     private void FormGrid()
     {
         int y = -1;
-
         for (int x = 0; x < board.childCount; x++)
         {
             if (x % gridSize == 0)
             {
                 y++;
             }
-
             cell[y, x % gridSize] = board.GetChild(x).GetComponent<CellScript>();
             cell[y, x % gridSize].Coordinates = new Vector2Int(y, x % gridSize);
         }
-    }
-
-    private void OneStepBack()
-    {
-        pathStack.Peek().Dettach();
-        nodeStack.Peek().ResetToDefault();
-        nodeStack.Pop();
     }
 
     private void TrackMidCells()
@@ -161,6 +199,10 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
     private void AccessCell(Vector2Int coordinates)
     {
+        if(cell[coordinates.x, coordinates.y].GetComponent<Image>() == null)
+        {
+            print("Image inside is null");
+        }
         cell[coordinates.x, coordinates.y].ChangeColor(penColor);
         nodeStack.Push(cell[coordinates.x, coordinates.y]);
         cell[coordinates.x, coordinates.y].PrevStatusAnalysis();
@@ -191,6 +233,10 @@ public class PaintGM : SingletonBehaviour<PaintGM>
 
         if (Vector2.Distance(cell[currentIndices.x, currentIndices.y].Pos, mousePos) < CellScript.Radius)
         {
+            if(cell[currentIndices.x, currentIndices.y].Designation == CellRole.EndNode & cell[currentIndices.x, currentIndices.y].EndNodeColor != penColor)
+            {
+                return;
+            }
             AccessCell(new Vector2Int(currentIndices.x, currentIndices.y));
             pathStack.Peek().Attach(cell[currentIndices.x, currentIndices.y]);
             prevIndices = currentIndices;
@@ -198,6 +244,8 @@ public class PaintGM : SingletonBehaviour<PaintGM>
             {
                 GetSessionStatus = SessionStatus.Finished;
             }
+            actualValue = nodeStack.Count - initial;
+            EventServices.GenericInstance.InvokeOnMoveUpdate(actualValue);
         }
     }
 

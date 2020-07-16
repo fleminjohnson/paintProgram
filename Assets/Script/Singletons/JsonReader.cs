@@ -19,11 +19,13 @@ public class JsonReader : SingletonBehaviour<JsonReader>
         }
     }
 
-    public void AccessNodeList(ref Team[] gridArray)
+    public void AccessNodeList(ref Team[] gridArray, int currentLevel)
     {
-        for(int i =0; i < NodeList.Levels[1].Nodes.Count; i++)
+        CurrentLevel level = NodeList.Levels[currentLevel];
+
+        for (int i =0; i < NodeList.Levels[1].Nodes.Count; i++)
         {
-            gridArray[NodeList.Levels[1].Nodes[i].Value] = StringToEnum(NodeList.Levels[1].Nodes[i].NodeName);
+            gridArray[level.Nodes[i].Value] = StringToEnum(level.Nodes[i].NodeName);
         }
     }
 

@@ -12,11 +12,11 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : SingletonBehaviour<
         if (instance == null)
         {
             instance = (T)this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.LogWarning("Someone tring to create a duplicate of Singleton!");
+            Debug.LogWarning("Someone trying to create a duplicate of Singleton!");
             Destroy(this);
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,23 +16,23 @@ public class NodeService : SingletonBehaviour<NodeService>
     private Image endNodeSymbol;
 
     private int gridSize = 25;
-    //private Team[] gridArray = { Team.Default, Team.Default, Team.Default, Team.Red, Team.Green,
-    //    Team.Default, Team.Default, Team.Blue, Team.Green, Team.Default, Team.Red, 
-    //    Team.Default, Team.Default, Team.Default, Team.Default, Team.Orange, Team.Blue, Team.Default, Team.Yellow, 
-    //    Team.Orange, Team.Default, Team.Default, Team.Default, Team.Default,Team.Yellow };
+    private float scalingSize = 30000;
     private Team[] gridArray = new Team[25];
 
     void Start()
     {
-        for(int i = 0; i < gridArray.Length; i++)
+        CreateLevel();
+    }
+
+
+    public void CreateLevel()
+    {
+        for (int i = 0; i < gridArray.Length; i++)
         {
             gridArray[i] = Team.Default;
         }
-
-        JsonReader.Instance.AccessNodeList(ref gridArray);
+        JsonReader.Instance.AccessNodeList(ref gridArray, LevelOverController.Instance.CurrentLevel);
         CreateGrid();
-        //string json = JsonUtility.ToJson(gridArray[]);
-        //print(json);
     }
 
     private void CreateGrid()
@@ -61,7 +62,7 @@ public class NodeService : SingletonBehaviour<NodeService>
                     break;
             }
             currentObj.transform.SetParent(board.transform);
-            currentObj.transform.localScale = currentObj.transform.localScale * 0.037f;
+            currentObj.transform.localScale = currentObj.transform.localScale * Screen.width / scalingSize;
         }
     }
 
@@ -74,4 +75,5 @@ public class NodeService : SingletonBehaviour<NodeService>
         endNodeS.color = nodeColor;
         endNodeS.transform.SetParent(currentObj.transform);
     }
+
 }

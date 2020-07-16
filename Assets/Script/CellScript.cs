@@ -11,7 +11,6 @@ public class CellScript : MonoBehaviour
     [SerializeField]
     private CellRole role;
 
-    private cellStatus status = cellStatus.UnVisisted;
     private Image image;
     private Vector2Int coordinates;
     private Color defaultColor = Color.white;
@@ -21,6 +20,10 @@ public class CellScript : MonoBehaviour
     void Awake()
     {
         image = GetComponent<Image>();
+        if(image == null)
+        {
+            print("Image is null");
+        }
         colorHistory.Push(defaultColor);
     }
 
@@ -30,30 +33,44 @@ public class CellScript : MonoBehaviour
 
     public CellRole Designation { get{ return role; } }
 
-    public Color EndNodeColor { set { endNodeColor = value; } }
+    public Color EndNodeColor {get{ return endNodeColor; } set { endNodeColor = value; }  }
+
+    public cellStatus Status { get; private set; } = cellStatus.UnVisisted;
+
+    public void ExposeUnVisited()
+    {
+        image.color = Color.green;
+    }
 
     public void ChangeColor(Color cellColor)
     {
         colorHistory.Push(image.color);
+        if(image == null)
+        {
+            print("Image is null");
+        }
         image.color = cellColor;
-        image.color = image.color / 2;
+        image.color /= 2;
     }
 
     public void PrevStatusAnalysis()
     {
-        if (status == cellStatus.UnVisisted)
+        if (Status == cellStatus.UnVisisted)
         {
-            status = cellStatus.Visited;
+            Status = cellStatus.Visited;
             return;
         }
-        status = cellStatus.Intersection;
+        Status = cellStatus.Intersection;
         PaintGM.Instance.ReportIntersection();
     }
 
     public void ButtonClick()
     {
-        PaintGM.Instance.SetColor(endNodeColor);
-        PaintGM.Instance.EndNodeRoutine(coordinates);
+        if(Status == cellStatus.UnVisisted & PaintGM.Instance.GetSessionStatus == SessionStatus.Idle)
+        {
+            PaintGM.Instance.SetColor(endNodeColor);
+            PaintGM.Instance.EndNodeRoutine(coordinates);
+        }
     }
 
     internal void ResetToDefault()
@@ -67,14 +84,14 @@ public class CellScript : MonoBehaviour
             image.color = colorHistory.Peek();
         }
 
-        if(status == cellStatus.Intersection)
+        if(Status == cellStatus.Intersection)
         {
-            status = cellStatus.Visited;
+            Status = cellStatus.Visited;
             return;
         }
         else
         {
-            status = cellStatus.UnVisisted;
+            Status = cellStatus.UnVisisted;
         }
     }
 }

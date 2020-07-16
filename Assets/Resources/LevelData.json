@@ -1,7 +1,8 @@
 {
     "Levels":
-    [
+    [ 
         {
+
           "Nodes":
           [
             {
@@ -46,7 +47,6 @@
             }
           ]
         },
-
         {
           "Nodes":
           [
@@ -55,7 +55,52 @@
               "NodeName": "Red"
             },
             {
-              "Value": 11,
+              "Value": 4,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 7,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 8,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 10,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 14,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 18,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 23,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 3,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 4,
               "NodeName": "Green"
             },
             {
@@ -79,11 +124,11 @@
               "NodeName": "Blue"
             },
             {
-              "Value": 18,
+              "Value": 12,
               "NodeName": "Yellow"
             },
             {
-              "Value": 19,
+              "Value": 23,
               "NodeName": "Cyan"
             },
             {
@@ -91,6 +136,321 @@
               "NodeName": "Yellow"
             }
           ]
-        }        
-    ]          
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 2,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 6,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 10,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 14,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 19,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 18,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 1,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 23,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 5,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 1,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 2,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 3,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 14,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 22,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 4,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 23,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 20,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 0,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 1,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 3,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 8,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 6,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 10,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 24,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 17,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 22,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 21,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 11,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 2,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 3,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 18,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 9,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 8,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 20,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 24,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 1,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 2,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 3,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 18,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 8,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 9,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 20,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 12,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 14,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 1,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 2,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 3,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 14,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 22,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 4,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 23,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 20,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+        {
+          "Nodes":
+          [
+            {
+              "Value": 3,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 4,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 7,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 8,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 10,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 14,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 18,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 23,
+              "NodeName": "Yellow"
+            }
+          ]
+        }
+     ]    
 }
