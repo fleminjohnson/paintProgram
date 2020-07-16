@@ -15,14 +15,23 @@ public class NodeService : SingletonBehaviour<NodeService>
     private Image endNodeSymbol;
 
     private int gridSize = 25;
-    private Team[] gridArray = { Team.Default, Team.Default, Team.Default, Team.Red, Team.Green,
-        Team.Default, Team.Default, Team.Blue, Team.Green, Team.Default, Team.Red, 
-        Team.Default, Team.Default, Team.Default, Team.Default, Team.Orange, Team.Blue, Team.Default, Team.Yellow, 
-        Team.Orange, Team.Default, Team.Default, Team.Default, Team.Default,Team.Yellow };
+    //private Team[] gridArray = { Team.Default, Team.Default, Team.Default, Team.Red, Team.Green,
+    //    Team.Default, Team.Default, Team.Blue, Team.Green, Team.Default, Team.Red, 
+    //    Team.Default, Team.Default, Team.Default, Team.Default, Team.Orange, Team.Blue, Team.Default, Team.Yellow, 
+    //    Team.Orange, Team.Default, Team.Default, Team.Default, Team.Default,Team.Yellow };
+    private Team[] gridArray = new Team[25];
 
     void Start()
     {
+        for(int i = 0; i < gridArray.Length; i++)
+        {
+            gridArray[i] = Team.Default;
+        }
+
+        JsonReader.Instance.AccessNodeList(ref gridArray);
         CreateGrid();
+        //string json = JsonUtility.ToJson(gridArray[]);
+        //print(json);
     }
 
     private void CreateGrid()
@@ -38,7 +47,7 @@ public class NodeService : SingletonBehaviour<NodeService>
                 case Team.Green:
                     CreateTeam(out currentObj, Color.green);
                     break;
-                case Team.Orange:
+                case Team.Cyan:
                     CreateTeam(out currentObj, Color.cyan);
                     break;
                 case Team.Red:

@@ -3,7 +3,7 @@
     Red,
     Green,
     Blue,
-    Orange,
+    Cyan,
     Yellow,
     Default
 }

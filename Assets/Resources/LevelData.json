@@ -1,0 +1,96 @@
+{
+    "Levels":
+    [
+        {
+          "Nodes":
+          [
+            {
+              "Value": 3,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 4,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 7,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 8,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 10,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 18,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 19,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 24,
+              "NodeName": "Yellow"
+            }
+          ]
+        },
+
+        {
+          "Nodes":
+          [
+            {
+              "Value": 3,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 11,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 7,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 8,
+              "NodeName": "Green"
+            },
+            {
+              "Value": 10,
+              "NodeName": "Red"
+            },
+            {
+              "Value": 15,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 16,
+              "NodeName": "Blue"
+            },
+            {
+              "Value": 18,
+              "NodeName": "Yellow"
+            },
+            {
+              "Value": 19,
+              "NodeName": "Cyan"
+            },
+            {
+              "Value": 24,
+              "NodeName": "Yellow"
+            }
+          ]
+        }        
+    ]          
+}
