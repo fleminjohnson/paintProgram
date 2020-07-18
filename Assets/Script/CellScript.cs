@@ -87,7 +87,6 @@ public class CellScript : MonoBehaviour
         if(Status == cellStatus.Intersection)
         {
             Status = cellStatus.Visited;
-            return;
         }
         else
         {

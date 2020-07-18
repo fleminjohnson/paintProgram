@@ -62,7 +62,8 @@ public class NodeService : SingletonBehaviour<NodeService>
                     break;
             }
             currentObj.transform.SetParent(board.transform);
-            currentObj.transform.localScale = currentObj.transform.localScale * Screen.width / scalingSize;
+            currentObj.transform.localScale = currentObj.transform.localScale * 0.036f;
+            print(Screen.width / scalingSize);
         }
     }
 

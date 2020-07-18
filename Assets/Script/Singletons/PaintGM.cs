@@ -150,6 +150,7 @@ public class PaintGM : SingletonBehaviour<PaintGM>
         else
         {
             pathStack.Peek().Dettach();
+            GetSessionStatus = SessionStatus.Suspended;
         }
         nodeStack.Peek().ResetToDefault();
         nodeStack.Pop();
